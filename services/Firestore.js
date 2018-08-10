@@ -2,11 +2,11 @@ const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
   projectId: 'botinho-b8465',
-  keyFilename: './botinho-b986029f518e.json',
+  keyFilename: 'botinho-b986029f518e.json',
 });
 
-async function _setDocument (document, data) {
-  let docRef = firestore.doc(document);
+async function _setDocument (doc, data) {
+  let docRef = firestore.doc(doc);
   
   let setDoc = await docRef.set(data, {merge: true}).then((ref) => {
     return { 'success': true, ref };
@@ -18,8 +18,8 @@ async function _setDocument (document, data) {
   return setDoc
 }
 
-async function _getDocument (document) {
-  let docRef = firestore.doc(document);
+async function _getDocument (doc) {
+  let docRef = firestore.doc(doc);
   let documentSnapshot = await docRef.get()
 
   return documentSnapshot.exists ? documentSnapshot.data() : null
