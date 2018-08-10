@@ -2,8 +2,9 @@ const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
   projectId: 'botinho-b8465',
-  keyFilename: 'botinho-b986029f518e.json',
+  keyFilename: './botinho-b986029f518e.json',
 });
+firestore.settings({timestampsInSnapshots: true});
 
 async function _setDocument (doc, data) {
   let docRef = firestore.doc(doc);
