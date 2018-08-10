@@ -24,20 +24,23 @@ async function delay (senderId, ms) {
   sendTextMessage(senderId, "chau amigo");
 }
 
-module.exports = (event) => {
-  const senderId = event.sender.id;
-  const message = event.message.text;
+module.exports = (senderId, message) => {
+  if (message) {
+    console.log("processMessage:: senderId", senderId)
+    console.log("processMessage:: message", message)
 
-  console.log("processMessage:: senderId", senderId)
-  console.log("processMessage:: message", event.message)
-  if (event.message.nlp && event.message.nlp.entities) {
-    console.log("processMessage:: entities", event.message.nlp.entities)
+    if (message.nlp && message.nlp.entities) {
+      console.log("processMessage:: entities", message.nlp.entities)
+    }
+
+    sendTextMessage(senderId, "hola amigo");
   }
-  sendTextMessage(senderId, "hola amigo");
   
   //Async message
   //delay(senderId, 5000)
   
+
+  //DIALOGFLOW
   /*const apiaiSession = apiAiClient.textRequest(message, {sessionId: 'crowdbotics_bot'});
   //console.log("processMessage:: apiaiSession",apiaiSession)
 
