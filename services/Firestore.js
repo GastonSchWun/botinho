@@ -10,7 +10,7 @@ async function _setDocument (document, data) {
   
   let setDoc = await docRef.set(data, {merge: true}).then((ref) => {
     return { 'success': true, ref };
-  }).catch((error){
+  }).catch((error) => {
     console.log("Error createUser", error);
     return { 'success': false, error };
   });
