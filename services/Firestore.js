@@ -6,8 +6,13 @@ const firestore = new Firestore({
 });
 firestore.settings({timestampsInSnapshots: true});
 
-async function _setDocument (doc, data) {
-  let docRef = firestore.doc(doc);
+const COLLECTIONS = {
+  USERS: 'users',
+  LOGOS: 'logos'
+}
+
+async function _setDocument (collection, doc, data) {
+  let docRef = firestore.collection(collection).doc(doc);
   
   let setDoc = await docRef.set(data, {merge: true}).then((ref) => {
     return { 'success': true, ref };
@@ -19,21 +24,21 @@ async function _setDocument (doc, data) {
   return setDoc
 }
 
-async function _getDocument (doc) {
-  let docRef = firestore.doc(doc);
+async function _getDocument (collection, doc) {
+  let docRef = firestore.collection(collection).doc(doc);
   let documentSnapshot = await docRef.get()
 
   return documentSnapshot.exists ? documentSnapshot.data() : null
 }
 
 async function getUser (userId, data) {
-  let userDoc = await _getDocument(`users/${userId}`);
+  let userDoc = await _getDocument(COLLECTIONS.USERS, userId);
 
   return userDoc;
 }
 
 async function setUser (userId, data) {
-  let userExists = await _getDocument(`users/${userId}`);
+  let userExists = await _getDocument(COLLECTIONS.USERS, userId);
   let newDate = new Date().getTime();
   data.updated = newDate;
 
@@ -41,7 +46,7 @@ async function setUser (userId, data) {
     data.created = newDate;
   }
   
-  let updateDoc = await _setDocument(userId, data);
+  let updateDoc = await _setDocument(COLLECTIONS.USERS, userId, data);
 
   return updateDoc;
 }
