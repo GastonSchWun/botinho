@@ -7,21 +7,24 @@ const API_AI_TOKEN = '9d3388ad7f10465e95c1c8010517a270';
 const apiAiClient = require('apiai')(API_AI_TOKEN);
 const timeout = ms => new Promise(res => setTimeout(res, ms))
 
-const sendTextMessage = (senderId, text) => {
+const sendMessage = (senderId, response) => {
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: FACEBOOK_ACCESS_TOKEN },
     method: 'POST',
     json: {
       recipient: { id: senderId },
-      message: { text },
+      message: response,
     }
   });
 };
 
 async function delay (senderId, ms) {
   await timeout(ms)
-  sendTextMessage(senderId, "chau amigo");
+  let response = {
+    "text": "chau amigo"
+  }
+  sendMessage(senderId, response);
 }
 
 module.exports = (senderId, message) => {
@@ -33,7 +36,39 @@ module.exports = (senderId, message) => {
       console.log("processMessage:: entities", message.nlp.entities)
     }
 
-    sendTextMessage(senderId, "hola amigo");
+    if (message.text === "opciones") {
+      let response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": "Este es el logo de Wunderman?",
+              "subtitle": "Elegí tu respuesta.",
+              "image_url": "http://www.wunderman.com.ar/sites/all/themes/wunderman/logo.png",
+              "buttons": [
+                {
+                  "type": "postback",
+                  "title": "Si!",
+                  "payload": "yes",
+                },
+                {
+                  "type": "postback",
+                  "title": "No!",
+                  "payload": "no",
+                }
+              ],
+            }]
+          }
+        }
+      }
+      sendMessage(senderId, response);
+    } else {
+      let response = {
+        "text": "hola amigo"
+      }
+      sendMessage(senderId, response);
+    }
   }
   
   //Async message
@@ -47,7 +82,7 @@ module.exports = (senderId, message) => {
   apiaiSession.on('response', (response) => {
     const result = response.result.fulfillment.speech;
     console.log("processMessage::onResponse", senderId, result)
-    sendTextMessage(senderId, result);
+    sendMessage(senderId, result);
   });
 
   apiaiSession.on('error', error => console.log(error));
