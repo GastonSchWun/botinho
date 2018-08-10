@@ -17,7 +17,7 @@ async function delay (senderId, ms) {
 }
 
 module.exports = (senderId, message) => {
-  getUser(senderId, {})
+  setUser(senderId, {})
   if (message) {
     console.log("processMessage:: senderId", senderId)
     console.log("processMessage:: message", message)

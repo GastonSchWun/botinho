@@ -20,18 +20,18 @@ async function _setDocument (document, data) {
 
 async function _getDocument (document) {
   let docRef = firestore.doc(document);
-  let documentSnapshot = await documentRef.get()
+  let documentSnapshot = await docRef.get()
 
   return documentSnapshot.exists ? documentSnapshot.data() : null
 }
 
-export async function getUser (userId, data) {
+async function getUser (userId, data) {
   let userDoc = await _getDocument(`users/${userId}`);
 
   return userDoc;
 }
 
-export async function setUser (userId, data) {
+async function setUser (userId, data) {
   let userExists = await _getDocument(`users/${userId}`);
   let newDate = new Date().getTime();
   data.updated = newDate;
@@ -44,3 +44,6 @@ export async function setUser (userId, data) {
 
   return updateDoc;
 }
+
+module.exports.getUser = getUser
+module.exports.setUser = setUser
