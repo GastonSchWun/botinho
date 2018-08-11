@@ -9,7 +9,7 @@ async function delay (senderId, ms) {
   await timeout(ms)
   let response = {
     "text": "chau amigo"
-  }
+  };
   sendMessage(senderId, response);
 }
 
@@ -19,16 +19,13 @@ const timeout = (ms) => {
 
 const getLogo = (logoId, logos) => {
   if (logoId) {
-    return logos[logoId]
+    return logos[logoId];
   }
 
-  let logosList = logos.all
-  let logoRandom = logosList[Math.floor(Math.random()*logosList.length)
+  let logosList = logos.all;
+  let logoRandom = logosList[Math.floor(Math.random()*logosList.length)];
 
-  return logos[logoRandom]
-  }
-  
-  return logoId ? logos[logoId] : logos[]
+  return logos[logoRandom];
 };
 
 const getUnseenLogos = (allLogos, seenLogos) => {
@@ -41,8 +38,8 @@ const sendDefault = (senderId) => {
 };
 
 const sendQuest = async (senderId) => {
-  let { user, logos } = await getUserAndLogos(senderId)
-  let logo = getLogo(null, logos)
+  let { user, logos } = await getUserAndLogos(senderId);
+  let logo = getLogo(null, logos);
   /*let quests = {}
 
   if (user && user.quests) {
