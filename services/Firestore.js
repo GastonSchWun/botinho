@@ -2,7 +2,7 @@ const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
   projectId: 'botinho-b8465',
-  keyFilename: './services/botinho-b986029f518e.json',
+  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
 });
 firestore.settings({ timestampsInSnapshots: true });
 
