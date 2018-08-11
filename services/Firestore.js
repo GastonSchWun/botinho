@@ -43,23 +43,24 @@ async function setUser(userId, data) {
   }
 
   return setDocument(COLLECTIONS.USERS, userId, data);
-};
+}
 
 async function getUser(userId) {
   const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   return { user: userDoc };
-};
+}
 
 async function getLogos() {
   const logosDoc = await getDocument(COLLECTIONS.CONTENT, 'logos');
   return { logos: logosDoc };
-};
+}
 
 async function getUserAndLogos(userId) {
   const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   const logosDoc = await getDocument(COLLECTIONS.CONTENT, 'logos');
+  console.log('return getUserAndLogos': logosDoc, getUserAndLogos);
   return { user: userDoc, logos: logosDoc };
-};
+}
 
 module.exports.setUser = setUser;
 module.exports.getUser = getUser;
