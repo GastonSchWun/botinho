@@ -28,6 +28,17 @@ const sendDefault = (senderId) => {
   sendMessage(senderId, response);
 };
 
+const resetQuest = async () => {
+  const data = { quests: {} };
+  const response = {
+    text: 'listo maifrend! mensajeame "dame logo" cuando quieras',
+  };
+
+  setUser(senderId, data).then(() => {
+    sendMessage(senderId2, response);
+  });
+};
+
 const sendQuest = async (senderId) => {
   const { user, logos } = await getUserAndLogos(senderId);
   const unguessedLogos = checkUngessedLogos(logos, user);
@@ -86,6 +97,9 @@ module.exports = (senderId, message) => {
     switch (message.text) {
       case 'dame logo':
         sendQuest(senderId);
+        break;
+      case 'reset':
+        resetQuest(senderId);
         break;
       default:
         sendDefault(senderId);

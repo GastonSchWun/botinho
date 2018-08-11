@@ -58,7 +58,7 @@ async function getUserAndLogos(userId) {
   return { user: userDoc, logos: logosDoc };
 }
 
-module.exports.getUser = getUser;
 module.exports.setUser = setUser;
+module.exports.getUser = getUser;
 module.exports.getLogos = getLogos;
 module.exports.getUserAndLogos = getUserAndLogos;
