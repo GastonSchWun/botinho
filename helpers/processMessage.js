@@ -1,4 +1,4 @@
-const sendMessage = require('./sendMessage');
+const { sendMessage, sendTypingOn } = require('./sendMessage');
 const { setUser, getUserAndLogos } = require('../services/Firestore');
 
 /* ApiAi === Dialogflow */
@@ -89,6 +89,8 @@ const sendQuest = async () => {
 
 module.exports = (senderId, message) => {
   USER_ID = senderId;
+  sendTypingOn(USER_ID);
+
   if (message) {
     /* console.log('processMessage:: senderId', senderId)
     console.log('processMessage:: message', message)
