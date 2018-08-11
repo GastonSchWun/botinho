@@ -91,7 +91,7 @@ module.exports = (senderId, message) => {
   USER_ID = senderId;
 
   if (message) {
-    sendTypingOn(USER_ID);
+    //sendTypingOn(USER_ID);
     /* console.log('processMessage:: senderId', senderId)
     console.log('processMessage:: message', message)
     if (message.nlp && message.nlp.entities) {
