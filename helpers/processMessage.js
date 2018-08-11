@@ -24,7 +24,7 @@ const checkUngessedLogos = (logos, user) => {
   for (let logo in logos) {
     if (logos.hasOwnProperty(logo)) {
       if (!user || !user.quests || !user.quests.hasOwnProperty(logo) || !user.quests[logo]) {
-        logoArray.push(logo)
+        logosArray.push(logo)
       }
     }
   }
@@ -34,7 +34,7 @@ const checkUngessedLogos = (logos, user) => {
 
 const sendDefault = (senderId) => {
   /*idealmente seria un boton*/
-  let response = { "text": "hola amigo! Cuando estes listo para adivinar escribime\n\"dame logo\"" }
+  let response = { "text": "hola amigo! Cuando estes listo para adivinar mandame un mensaje diciendo: \"dame logo\"" }
   sendMessage(senderId, response);
 };
 
@@ -93,7 +93,7 @@ module.exports = (senderId, message) => {
       console.log("processMessage:: entities", message.nlp.entities)
     }*/
     switch (message.text) {
-      case "hit me":
+      case "dame logo":
         sendQuest(senderId)
         break;
       default:
