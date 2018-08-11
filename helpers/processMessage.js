@@ -18,8 +18,17 @@ const timeout = (ms) => {
 };
 
 const getLogo = (logoId, logos) => {
+  if (logoId) {
+    return logos[logoId]
+  }
+
   let logosList = logos.all
-  return logoId ? logos[logoId] : logos[logosList[Math.floor(Math.random()*logosList.length)]
+  let logoRandom = logosList[Math.floor(Math.random()*logosList.length)
+
+  return logos[logoRandom]
+  }
+  
+  return logoId ? logos[logoId] : logos[]
 };
 
 const getUnseenLogos = (allLogos, seenLogos) => {
