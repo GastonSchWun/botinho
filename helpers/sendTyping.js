@@ -2,10 +2,12 @@ const request = require('request');
 
 const FB_TOKEN = process.env.FACEBOOK_ACCESS_TOKEN;
 
-module.exports = (senderId, message) => {
-  if (!senderId || !message) {
+module.exports = (senderId, typing) => {
+  if (!senderId || typing) {
     return null;
   }
+
+  const sender_action = typing ? 'typing_on' : 'typing_off';
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -13,7 +15,7 @@ module.exports = (senderId, message) => {
     method: 'POST',
     json: {
       recipient: { id: senderId },
-      message,
+      sender_action,
     },
   });
   return false;
