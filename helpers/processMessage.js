@@ -1,4 +1,4 @@
-const { sendMessage, sendTypingOn } = require('./sendMessage');
+const sendMessage = require('./sendMessage');
 const { setUser, getUserAndLogos } = require('../services/Firestore');
 
 /* ApiAi === Dialogflow */
