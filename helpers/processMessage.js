@@ -58,20 +58,12 @@ const sendQuest = async () => {
               {
                 type: 'postback',
                 title: 'Si!',
-                // payload: `${randomLogo}::yes`,
-                payload: {
-                  logo: randomLogo,
-                  success: true,
-                },
+                payload: `${randomLogo}::1`,
               },
               {
                 type: 'postback',
                 title: 'No!',
-                // payload: `${randomLogo}::no`,
-                payload: {
-                  logo: randomLogo,
-                  success: false,
-                },
+                payload: `${randomLogo}::0`,
               },
             ],
           }],

@@ -36,9 +36,9 @@ const saveAnswer = async (logo) => {
   });
 };
 
-const checkRepeated = async (postback) => {
+const checkRepeated = async (answer) => {
   const user = await getUser(USER_ID);
-  const { logo, success } = postback;
+  const { logo, success } = answer;
   let repeated = false;
 
   if (user && user.quests && user.quests[logo]) {
@@ -47,7 +47,7 @@ const checkRepeated = async (postback) => {
 
   if (repeated) {
     sendRepeated();
-  } else if (success) {
+  } else if (success === '1') {
     saveAnswer(logo);
   } else {
     sendIncorrect();
@@ -58,8 +58,9 @@ const checkRepeated = async (postback) => {
 module.exports = (senderId, postback) => {
   USER_ID = senderId;
 
-  if (postback && postback.logo) {
+  if (postback && postback.payload && postback.payload.indexOf('::') >= 0) {
     sendTyping(USER_ID, true);
-    checkRepeated(postback);
+    const [logo, success] = postback.payload.split('::');
+    checkRepeated({ logo, success });
   }
 };
