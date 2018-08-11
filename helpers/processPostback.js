@@ -27,17 +27,21 @@ const sendRepeated = () => {
   sendMessage(USER_ID, response);
 };
 
-const saveAnswer = async (logo) => {
+const saveAnswer = async (logo, success) => {
   const data = { quests: {} };
   data.quests[logo] = true;
 
   setUser(USER_ID, data).then(() => {
-    sendCorrect();
+    if (success === '1') {
+      sendCorrect();
+    } else {
+      sendIncorrect();
+    }
   });
 };
 
 const checkRepeated = async (answer) => {
-  const user = await getUser(USER_ID);
+  const { user } = await getUser(USER_ID);
   const { logo, success } = answer;
   let repeated = false;
 
@@ -47,10 +51,8 @@ const checkRepeated = async (answer) => {
 
   if (repeated) {
     sendRepeated();
-  } else if (success === '1') {
-    saveAnswer(logo);
   } else {
-    sendIncorrect();
+    saveAnswer(logo, success);
   }
   return false;
 };
