@@ -1,12 +1,9 @@
 const sendMessage = require('./sendMessage');
-const { getUser, setUser } = require('../services/Firestore');
+const { getUser, setUser, getUserAndLogos } = require('../services/Firestore');
+
 /* ApiAi === Dialogflow */
 /*const API_AI_TOKEN = '9d3388ad7f10465e95c1c8010517a270';
 const apiAiClient = require('apiai')(API_AI_TOKEN);*/
-
-
-
-const timeout = ms => new Promise(res => setTimeout(res, ms))
 
 async function delay (senderId, ms) {
   await timeout(ms)
@@ -16,48 +13,76 @@ async function delay (senderId, ms) {
   sendMessage(senderId, response);
 }
 
-module.exports = (senderId, message) => {
-  setUser(senderId, {}).then((res)=>console.log(res))
-  if (message) {
-    console.log("processMessage:: senderId", senderId)
-    console.log("processMessage:: message", message)
+const timeout = (ms) => {
+  new Promise(res => setTimeout(res, ms))
+};
 
-    if (message.nlp && message.nlp.entities) {
-      console.log("processMessage:: entities", message.nlp.entities)
-    }
+const getLogo = (logoId, logos) => {
+  return logoId ? logos[logoId] : logos[Math.floor(Math.random()*items.length)]
+};
 
-    if (message.text === "opciones") {
-      let response = {
-        "attachment": {
-          "type": "template",
-          "payload": {
-            "template_type": "generic",
-            "elements": [{
-              "title": "Este es el logo de Wunderman?",
-              "subtitle": "Elegí tu respuesta.",
-              "image_url": "http://www.wunderman.com.ar/sites/all/themes/wunderman/logo.png",
-              "buttons": [
-                {
-                  "type": "postback",
-                  "title": "Si!",
-                  "payload": "yes",
-                },
-                {
-                  "type": "postback",
-                  "title": "No!",
-                  "payload": "no",
-                }
-              ],
-            }]
-          }
+const getUnseenLogos = (allLogos, seenLogos) => {
+
+};
+
+const sendDefault = (senderId) => {
+  let response = { "text": "hola amigo" }
+  sendMessage(senderId, response);
+};
+
+const sendQuest = (senderId) => {
+  let { user, logos } = await getUserAndLogos(senderId)
+  let logo = getLogo(logoId, logos)
+  /*let quests = {}
+
+  if (user && user.quests) {
+
+  }*/
+
+  setUser(senderId, {}).then((res) => {
+    console.log(res)
+    let response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "title": "Este es el logo de " + logo.name +"?",
+            "subtitle": "Elegí tu respuesta.",
+            "image_url": logo.img,
+            "buttons": [
+              {
+                "type": "postback",
+                "title": "Si!",
+                "payload": "yes",
+              },
+              {
+                "type": "postback",
+                "title": "No!",
+                "payload": "no",
+              }
+            ],
+          }]
         }
       }
-      sendMessage(senderId, response);
-    } else {
-      let response = {
-        "text": "hola amigo"
-      }
-      sendMessage(senderId, response);
+    }
+    sendMessage(senderId, response)
+  });
+}
+
+module.exports = (senderId, message) => {
+  if (message) {
+    /*console.log("processMessage:: senderId", senderId)
+    console.log("processMessage:: message", message)
+    if (message.nlp && message.nlp.entities) {
+      console.log("processMessage:: entities", message.nlp.entities)
+    }*/
+    switch (message.text) {
+      case "hit me":
+        sendQuest(senderId)
+        break;
+      default:
+        sendDefault(senderId)
     }
   }
   
