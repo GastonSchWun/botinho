@@ -45,7 +45,7 @@ const sendQuest = async (senderId) => {
   if (unguessedLogos.length) {
     let randomLogo = unguessedLogos[Math.floor(Math.random()*unguessedLogos.length)]
     let userQuest = { quests:{}}
-    userQuests[randomLogo] = true
+    userQuest[randomLogo] = true
 
     setUser(senderId, userQuest).then((res) => {
       console.log('senderId2', senderId2)
