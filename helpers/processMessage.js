@@ -44,6 +44,9 @@ const resetQuest = async () => {
 
 const sendQuest = async () => {
   const { user, logos } = await getUserAndLogos(USER_ID);
+  console.log('sendQuest');
+  console.log(user);
+  console.log(logos);
   const unguessedLogos = getUngessedLogos(logos, user);
   let response = {};
 
@@ -109,17 +112,4 @@ module.exports = (senderId, message) => {
         sendDefault();
     }
   }
-
-  // DIALOGFLOW
-  /* const apiaiSession = apiAiClient.textRequest(message, {sessionId: 'crowdbotics_bot'});
-  // console.log('processMessage:: apiaiSession',apiaiSession)
-
-  apiaiSession.on('response', (response) => {
-    const result = response.result.fulfillment.speech;
-    console.log('processMessage::onResponse', senderId, result)
-    sendMessage(senderId, result);
-  });
-
-  apiaiSession.on('error', error => console.log(error));
-  apiaiSession.end(); */
 };
