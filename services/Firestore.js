@@ -33,7 +33,7 @@ async function getDocument(collection, doc) {
 }
 
 // Exported
-module.exports = async function setUser(userId, data) {
+async function setUser(userId, data) {
   const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   const newDate = new Date().getTime();
   data.updated = newDate;
@@ -45,18 +45,23 @@ module.exports = async function setUser(userId, data) {
   return setDocument(COLLECTIONS.USERS, userId, data);
 };
 
-module.exports = async function getUser(userId) {
+async function getUser(userId) {
   const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   return { user: userDoc };
 };
 
-module.exports = async function getLogos() {
+async function getLogos() {
   const logosDoc = await getDocument(COLLECTIONS.CONTENT, 'logos');
   return { logos: logosDoc };
 };
 
-module.exports = async function getUserAndLogos(userId) {
+async function getUserAndLogos(userId) {
   const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   const logosDoc = await getDocument(COLLECTIONS.CONTENT, 'logos');
   return { user: userDoc, logos: logosDoc };
 };
+
+module.exports.setUser = setUser;
+module.exports.getUser = getUser;
+module.exports.getLogos = getLogos;
+module.exports.getUserAndLogos = getUserAndLogos;
