@@ -12,7 +12,7 @@ let USER_ID = null;
 const getUngessedLogos = (logos, user) => {
   const logosArray = [];
 
-  Object.keys(logos).foreEach((logo) => {
+  Object.keys(logos).forEach((logo) => {
     if (hasOwnProperty.call(logos, logo)) {
       if (!user || !user.quests || !hasOwnProperty(user.quests, logo) || !user.quests[logo]) {
         logosArray.push(logo);
