@@ -89,9 +89,9 @@ const sendQuest = async () => {
 
 module.exports = (senderId, message) => {
   USER_ID = senderId;
-  sendTypingOn(USER_ID);
 
   if (message) {
+    sendTypingOn(USER_ID);
     /* console.log('processMessage:: senderId', senderId)
     console.log('processMessage:: message', message)
     if (message.nlp && message.nlp.entities) {
