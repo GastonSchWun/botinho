@@ -13,10 +13,9 @@ module.exports = (senderId, message) => {
     method: 'POST',
     json: {
       recipient: { id: senderId },
-      sender_action: 'typing_off',
+      // sender_action: 'typing_off',
       message,
     },
   });
   return false;
 };
-
