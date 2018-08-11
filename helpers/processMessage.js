@@ -5,7 +5,7 @@ const { setUser, getUserAndLogos } = require('../services/Firestore');
 /* const API_AI_TOKEN = '9d3388ad7f10465e95c1c8010517a270';
 const apiAiClient = require('apiai')(API_AI_TOKEN); */
 
-let senderId2 = null;
+let USER_ID = null;
 
 const checkUngessedLogos = (logos, user) => {
   const logosArray = [];
@@ -20,12 +20,12 @@ const checkUngessedLogos = (logos, user) => {
   return logosArray;
 };
 
-const sendDefault = (senderId) => {
+const sendDefault = () => {
   /* idealmente seria un boton */
   const response = {
     text: 'hola amigo! Cuando estes listo para adivinar mandame un mensaje diciendo: "dame logo"',
   };
-  sendMessage(senderId, response);
+  sendMessage(USER_ID, response);
 };
 
 const resetQuest = async () => {
@@ -34,13 +34,13 @@ const resetQuest = async () => {
     text: 'listo maifrend! mensajeame "dame logo" cuando quieras',
   };
 
-  setUser(senderId, data).then(() => {
-    sendMessage(senderId2, response);
+  setUser(USER_ID, data).then(() => {
+    sendMessage(USER_ID, response);
   });
 };
 
-const sendQuest = async (senderId) => {
-  const { user, logos } = await getUserAndLogos(senderId);
+const sendQuest = async () => {
+  const { user, logos } = await getUserAndLogos(USER_ID);
   const unguessedLogos = checkUngessedLogos(logos, user);
   let response = {};
 
@@ -49,8 +49,7 @@ const sendQuest = async (senderId) => {
     const data = { quests: {} };
     data.quests[randomLogo] = true;
 
-    setUser(senderId, data).then(() => {
-      console.log('senderId2', senderId2);
+    setUser(USER_ID, data).then(() => {
       response = {
         attachment: {
           type: 'template',
@@ -76,18 +75,18 @@ const sendQuest = async (senderId) => {
           },
         },
       };
-      sendMessage(senderId, response);
+      sendMessage(USER_ID, response);
     });
   } else {
     response = {
       text: 'ya adivinaste todos, sos un crack!',
     };
-    sendMessage(senderId, response);
+    sendMessage(USER_ID, response);
   }
 };
 
 module.exports = (senderId, message) => {
-  senderId2 = senderId;
+  USER_ID = senderId;
   if (message) {
     /* console.log('processMessage:: senderId', senderId)
     console.log('processMessage:: message', message)
@@ -96,13 +95,13 @@ module.exports = (senderId, message) => {
     } */
     switch (message.text) {
       case 'dame logo':
-        sendQuest(senderId);
+        sendQuest();
         break;
       case 'reset':
-        resetQuest(senderId);
+        resetQuest();
         break;
       default:
-        sendDefault(senderId);
+        sendDefault();
     }
   }
 
