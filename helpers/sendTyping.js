@@ -3,7 +3,7 @@ const request = require('request');
 const FB_TOKEN = process.env.FACEBOOK_ACCESS_TOKEN;
 
 module.exports = (senderId, typing) => {
-  if (!senderId || typing) {
+  if (!senderId || !typing) {
     return null;
   }
 
