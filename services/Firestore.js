@@ -60,5 +60,5 @@ async function getUserAndLogos (userId) {
 
 module.exports.getUser = getUser
 module.exports.setUser = setUser
-module.exports.setUser = getLogos
-module.exports.setUser = getUserAndLogos
+module.exports.getLogos = getLogos
+module.exports.getUserAndLogos = getUserAndLogos
