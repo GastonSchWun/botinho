@@ -1,3 +1,4 @@
+/* eslint no-param-reassign: ["error", { "props": false }] */
 const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore({
@@ -11,7 +12,8 @@ const COLLECTIONS = {
   CONTENT: 'content',
 };
 
-async function _setDocument(collection, doc, data) {
+// Firebase Functions
+async function setDocument(collection, doc, data) {
   const docRef = firestore.collection(collection).doc(doc);
 
   const setDoc = await docRef.set(data, { merge: true })
@@ -21,17 +23,18 @@ async function _setDocument(collection, doc, data) {
       return { success: false, error };
     });
 
-  return setDoc
+  return setDoc;
 }
 
-async function _getDocument(collection, doc) {
+async function getDocument(collection, doc) {
   const docRef = firestore.collection(collection).doc(doc);
   const documentSnapshot = await docRef.get();
   return documentSnapshot.exists ? documentSnapshot.data() : null;
 }
 
-async function setUser(userId, data) {
-  const userDoc = await _getDocument(COLLECTIONS.USERS, userId);
+// Exported
+module.exports = async function setUser(userId, data) {
+  const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   const newDate = new Date().getTime();
   data.updated = newDate;
 
@@ -39,26 +42,21 @@ async function setUser(userId, data) {
     data.created = newDate;
   }
 
-  return _setDocument(COLLECTIONS.USERS, userId, data);
-}
+  return setDocument(COLLECTIONS.USERS, userId, data);
+};
 
-async function getUser(userId) {
-  const userDoc = await _getDocument(COLLECTIONS.USERS, userId);
+module.exports = async function getUser(userId) {
+  const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   return { user: userDoc };
-}
+};
 
-async function getLogos() {
-  const logosDoc = await _getDocument(COLLECTIONS.CONTENT, 'logos');
+module.exports = async function getLogos() {
+  const logosDoc = await getDocument(COLLECTIONS.CONTENT, 'logos');
   return { logos: logosDoc };
-}
+};
 
-async function getUserAndLogos(userId) {
-  const userDoc = await _getDocument(COLLECTIONS.USERS, userId);
-  const logosDoc = await _getDocument(COLLECTIONS.CONTENT, 'logos');
+module.exports = async function getUserAndLogos(userId) {
+  const userDoc = await getDocument(COLLECTIONS.USERS, userId);
+  const logosDoc = await getDocument(COLLECTIONS.CONTENT, 'logos');
   return { user: userDoc, logos: logosDoc };
-}
-
-module.exports.setUser = setUser;
-module.exports.getUser = getUser;
-module.exports.getLogos = getLogos;
-module.exports.getUserAndLogos = getUserAndLogos;
+};

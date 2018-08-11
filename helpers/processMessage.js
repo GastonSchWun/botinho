@@ -5,17 +5,19 @@ const { setUser, getUserAndLogos } = require('../services/Firestore');
 /* const API_AI_TOKEN = '9d3388ad7f10465e95c1c8010517a270';
 const apiAiClient = require('apiai')(API_AI_TOKEN); */
 
+const { hasOwnProperty } = Object.prototype;
 let USER_ID = null;
 
-const checkUngessedLogos = (logos, user) => {
+const getUngessedLogos = (logos, user) => {
   const logosArray = [];
-  for (const logo in logos) {
-    if (logos.hasOwnProperty(logo)) {
-      if (!user || !user.quests || !user.quests.hasOwnProperty(logo) || !user.quests[logo]) {
+
+  Object.keys(logos).foreEach((logo) => {
+    if (hasOwnProperty.call(logos, logo)) {
+      if (!user || !user.quests || !hasOwnProperty(user.quests, logo) || !user.quests[logo]) {
         logosArray.push(logo);
       }
     }
-  }
+  });
 
   return logosArray;
 };
@@ -23,7 +25,7 @@ const checkUngessedLogos = (logos, user) => {
 const sendDefault = () => {
   /* idealmente seria un boton */
   const response = {
-    text: 'hola amigo! Cuando estes listo para adivinar mandame un mensaje diciendo: "dame logo"',
+    text: 'Hola amigo!\nCuando estes listo para adivinar mandame un mensaje diciendo: "dame logo"',
   };
   sendMessage(USER_ID, response);
 };
@@ -31,7 +33,7 @@ const sendDefault = () => {
 const resetQuest = async () => {
   const data = { quests: {} };
   const response = {
-    text: 'listo maifrend! mensajeame "dame logo" cuando quieras',
+    text: 'Listo maifrend!\nMensajeame "dame logo" cuando quieras un perder :)',
   };
 
   setUser(USER_ID, data).then(() => {
@@ -41,7 +43,7 @@ const resetQuest = async () => {
 
 const sendQuest = async () => {
   const { user, logos } = await getUserAndLogos(USER_ID);
-  const unguessedLogos = checkUngessedLogos(logos, user);
+  const unguessedLogos = getUngessedLogos(logos, user);
   let response = {};
 
   if (unguessedLogos.length) {
@@ -79,7 +81,7 @@ const sendQuest = async () => {
     });
   } else {
     response = {
-      text: 'ya adivinaste todos, sos un crack!',
+      text: 'Ya adivinaste todos, sos un crack!\nSi queres volvera empezar, mensajeame "reset".',
     };
     sendMessage(USER_ID, response);
   }
