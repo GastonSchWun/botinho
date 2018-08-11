@@ -1,9 +1,5 @@
-const { sendMessage, sendTyping} = require('./sendMessage');
+const { sendMessage, sendTyping } = require('./sendMessage');
 const { setUser, getUserAndLogos } = require('../services/Firestore');
-
-/* ApiAi === Dialogflow */
-/* const API_AI_TOKEN = '9d3388ad7f10465e95c1c8010517a270';
-const apiAiClient = require('apiai')(API_AI_TOKEN); */
 
 const { hasOwnProperty } = Object.prototype;
 let USER_ID = null;
@@ -33,7 +29,7 @@ const sendDefault = () => {
 const resetQuest = async () => {
   const data = { quests: {} };
   const response = {
-    text: 'Listo maifrend!\nMensajeame "dame logo" cuando quieras un perder :)',
+    text: 'Listo maifrend!\nMensajeame "dame logo" cuando quieras perder ;)',
   };
 
   setUser(USER_ID, data).then(() => {
@@ -48,40 +44,44 @@ const sendQuest = async () => {
 
   if (unguessedLogos.length) {
     const randomLogo = unguessedLogos[Math.floor(Math.random() * unguessedLogos.length)];
-    const data = { quests: {} };
-    data.quests[randomLogo] = true;
 
-    setUser(USER_ID, data).then(() => {
-      response = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'generic',
-            elements: [{
-              title: `Este es el logo de ${logos[randomLogo].name}?`,
-              subtitle: 'Elegí tu respuesta.',
-              image_url: logos[randomLogo].img,
-              buttons: [
-                {
-                  type: 'postback',
-                  title: 'Si!',
-                  payload: 'yes',
+    response = {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'generic',
+          elements: [{
+            title: `Este es el logo de ${logos[randomLogo].name}?`,
+            subtitle: 'Elegí tu respuesta.',
+            image_url: logos[randomLogo].img,
+            buttons: [
+              {
+                type: 'postback',
+                title: 'Si!',
+                // payload: `${randomLogo}::yes`,
+                payload: {
+                  logo: randomLogo,
+                  success: true,
                 },
-                {
-                  type: 'postback',
-                  title: 'No!',
-                  payload: 'no',
+              },
+              {
+                type: 'postback',
+                title: 'No!',
+                // payload: `${randomLogo}::no`,
+                payload: {
+                  logo: randomLogo,
+                  success: false,
                 },
-              ],
-            }],
-          },
+              },
+            ],
+          }],
         },
-      };
-      sendMessage(USER_ID, response);
-    });
+      },
+    };
+    sendMessage(USER_ID, response);
   } else {
     response = {
-      text: 'Ya adivinaste todos, sos un crack!\nSi queres volvera empezar, mensajeame "reset".',
+      text: 'Ya adivinaste todos, sos un crack! 8)\nSi queres volvera empezar, mensajeame "reset".',
     };
     sendMessage(USER_ID, response);
   }
@@ -92,10 +92,10 @@ module.exports = (senderId, message) => {
 
   if (message) {
     /* console.log('processMessage:: senderId', senderId)
-    console.log('processMessage:: message', message)
+    console.log('processMessage:: message', message) */
     if (message.nlp && message.nlp.entities) {
-      console.log('processMessage:: entities', message.nlp.entities)
-    } */
+      console.log('processMessage:: entities', message.nlp.entities);
+    }
     switch (message.text) {
       case 'dame logo':
         sendTyping(USER_ID, true);

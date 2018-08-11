@@ -1,4 +1,5 @@
 const processMessage = require('../helpers/processMessage');
+const processPostback = require('../helpers/processPostback');
 
 module.exports = (req, res) => {
   console.log('messageWebhook:: new');
@@ -14,6 +15,7 @@ module.exports = (req, res) => {
           processMessage(senderId, WEBHOOK_EVENT.message);
         } else if (WEBHOOK_EVENT.postback) {
           console.log('postback', WEBHOOK_EVENT.postback);
+          processPostback(senderId, WEBHOOK_EVENT.postback);
         }
       } else {
         console.log('no messaging', entry);
