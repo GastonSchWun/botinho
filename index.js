@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const verification = require('./controllers/verification');
 const messageWebhook = require('./controllers/messageWebhook');
+
 const APP_PORT = process.env.PORT || 5000;
 
 const app = express();

@@ -4,7 +4,7 @@ const FACEBOOK_ACCESS_TOKEN = 'EAAGy9WdDbsoBAGoIID579tlGdwpBe9CqmBO6vefSZB3um9lZ
 
 module.exports = (senderId, message) => {
   if (!senderId || !message) {
-    return null
+    return null;
   }
 
   request({
@@ -13,7 +13,8 @@ module.exports = (senderId, message) => {
     method: 'POST',
     json: {
       recipient: { id: senderId },
-      message: message,
-    }
+      message,
+    },
   });
-}
+  return false;
+};
