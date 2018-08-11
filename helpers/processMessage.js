@@ -30,7 +30,7 @@ const sendDefault = (senderId) => {
   sendMessage(senderId, response);
 };
 
-const sendQuest = (senderId) => {
+const sendQuest = async (senderId) => {
   let { user, logos } = await getUserAndLogos(senderId)
   let logo = getLogo(logoId, logos)
   /*let quests = {}
