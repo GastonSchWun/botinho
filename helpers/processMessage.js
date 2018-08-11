@@ -1,5 +1,4 @@
-const sendMessage = require('./sendMessage');
-const sendTyping = require('./sendTyping');
+const { sendMessage, sendTyping} = require('./sendMessage');
 const { setUser, getUserAndLogos } = require('../services/Firestore');
 
 /* ApiAi === Dialogflow */
@@ -44,9 +43,6 @@ const resetQuest = async () => {
 
 const sendQuest = async () => {
   const { user, logos } = await getUserAndLogos(USER_ID);
-  console.log('sendQuest');
-  console.log(user);
-  console.log(logos);
   const unguessedLogos = getUngessedLogos(logos, user);
   let response = {};
 
@@ -95,7 +91,6 @@ module.exports = (senderId, message) => {
   USER_ID = senderId;
 
   if (message) {
-    sendTyping(USER_ID, true);
     /* console.log('processMessage:: senderId', senderId)
     console.log('processMessage:: message', message)
     if (message.nlp && message.nlp.entities) {
@@ -103,6 +98,7 @@ module.exports = (senderId, message) => {
     } */
     switch (message.text) {
       case 'dame logo':
+        sendTyping(USER_ID, true);
         sendQuest();
         break;
       case 'reset':

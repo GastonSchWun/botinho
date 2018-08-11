@@ -58,7 +58,6 @@ async function getLogos() {
 async function getUserAndLogos(userId) {
   const userDoc = await getDocument(COLLECTIONS.USERS, userId);
   const logosDoc = await getDocument(COLLECTIONS.CONTENT, 'logos');
-  console.log('return getUserAndLogos', logosDoc, getUserAndLogos);
   return { user: userDoc, logos: logosDoc };
 }
 
