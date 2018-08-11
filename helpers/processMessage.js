@@ -18,7 +18,7 @@ const timeout = (ms) => {
 };
 
 const getLogo = (logoId, logos) => {
-  return logoId ? logos[logoId] : logos[Math.floor(Math.random()*items.length)]
+  return logoId ? logos[logoId] : logos[Math.floor(Math.random()*logos.length)]
 };
 
 const getUnseenLogos = (allLogos, seenLogos) => {
@@ -32,7 +32,7 @@ const sendDefault = (senderId) => {
 
 const sendQuest = async (senderId) => {
   let { user, logos } = await getUserAndLogos(senderId)
-  let logo = getLogo(logoId, logos)
+  let logo = getLogo(null, logos)
   /*let quests = {}
 
   if (user && user.quests) {
