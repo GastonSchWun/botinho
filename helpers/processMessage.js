@@ -37,6 +37,24 @@ const resetQuest = async () => {
   });
 };
 
+const askLocation = () => {
+  const response = {
+    text: 'Here is a quick reply!',
+    quick_replies: [
+      {
+        content_type: 'text',
+        title: 'quick reply title',
+        payload: 'location??',
+        image_url: 'http://www.wunderman.com.ar/sites/all/themes/wunderman/images/wunder-marker.png'
+      },
+      {
+        content_type: 'location',
+      },
+    ],
+  };
+  sendMessage(USER_ID, response);
+};
+
 const sendQuest = async () => {
   const { user, logos } = await getUserAndLogos(USER_ID);
   const unguessedLogos = getUngessedLogos(logos, user);
@@ -94,7 +112,12 @@ module.exports = (senderId, message) => {
         sendQuest();
         break;
       case 'reset':
+        sendTyping(USER_ID, true);
         resetQuest();
+        break;
+      case 'quick':
+        sendTyping(USER_ID, true);
+        askLocation();
         break;
       default:
         sendDefault();

@@ -13,6 +13,7 @@ module.exports = (req, res) => {
 
         if (WEBHOOK_EVENT.message) {
           processMessage(senderId, WEBHOOK_EVENT.message);
+          console.log('message', WEBHOOK_EVENT.message);
         } else if (WEBHOOK_EVENT.postback) {
           console.log('postback', WEBHOOK_EVENT.postback);
           processPostback(senderId, WEBHOOK_EVENT.postback);
