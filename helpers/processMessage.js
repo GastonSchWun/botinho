@@ -42,13 +42,8 @@ const askLocation = () => {
     text: 'Here is a quick reply!',
     quick_replies: [
       {
-        content_type: 'text',
-        title: 'quick reply title',
-        payload: 'location??',
-        image_url: 'http://www.wunderman.com.ar/sites/all/themes/wunderman/images/wunder-marker.png'
-      },
-      {
         content_type: 'location',
+        image_url: 'http://www.wunderman.com.ar/sites/all/themes/wunderman/images/wunder-marker.png',
       },
     ],
   };
@@ -97,6 +92,15 @@ const sendQuest = async () => {
   }
 };
 
+const emptyText = (message) => {
+  if (message && message.attachments && message.attachments.length) {
+    message.attachments.forEach((attach) => {
+      console.log('attachmentType:', attach.type);
+      console.log('attachmentPayload:', attach.payload);
+    });
+  }
+};
+
 module.exports = (senderId, message) => {
   USER_ID = senderId;
 
@@ -116,8 +120,12 @@ module.exports = (senderId, message) => {
         resetQuest();
         break;
       case 'quick':
-        sendTyping(USER_ID, true);
+        // sendTyping(USER_ID, true);
         askLocation();
+        break;
+      case undefined:
+      case null:
+        emptyText(message);
         break;
       default:
         sendDefault();
