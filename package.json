@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "GOOGLE_APPLICATION_CREDENTIALS='./services/botinho-b986029f518e.json' FACEBOOK_ACCESS_TOKEN='EAAGy9WdDbsoBAIN5hzAVZBATQixAZAXiyZATo4qHqZCkBxlDCRdEbf5ZBl8bxH6LRH95csv1IxCokTAvA51V3IloI6VRXNhdhcUfyFpkAZBGtMMUYIdExRLngXBHgKlx8jCB9bDbxxe18R7pkS8YJjdToVyKroT4ryLgF6rEEEqAZDZD' node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint index.js helpers/** controllers/** services/Firestore.js"
   },
